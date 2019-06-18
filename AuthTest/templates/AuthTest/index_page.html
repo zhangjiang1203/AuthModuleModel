@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录展示</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.min.css' %}">
+    <script src="{% static 'jquery-3.3.1.js' %}"></script>
+    <style>
+        .edit-author{
+            margin: 100px 300px;
+        }
+        #error{
+            color: red;
+            padding-left: 15px;
+        }
+    </style>
+    {# 添加下面的token才能发送post请求    #}
+    {% csrf_token %}
+    <script src="{% static 'ajax_token.js' %}"></script>
+    <script>
+        $(function () {
+           $('#clickBtn').click(function () {
+              console.log('开始点击');
+              $.ajax({
+                  {#尽量在文件中不要使用硬编码书写url，使用对应的名称，便于以后开发维护#}
+                  {#url:'/AuthTest/index/' ,#}
+                  url:'{% url 'AuthTest:indexPage' %}',
+                  type:'post',
+                  {#取出输入框中的值，$("#name").val()#}
+                  data:{'name':$('#name').val(),'pwd':$('#pwd').val(),'csrfmiddlewaretoken':'{{ csrf_token }}'},
+                  success:function (data) {
+                      console.log(data.msg)
+                      if (data.status == 200) {
+                          // 跳转到制定的位置,或者直接写死一个url
+                          location.href = '{% url 'AuthTest:login_success' %}'
+                      }else {
+                          $('#error').text(data.msg)
+                      }
+                  }
+              })
+           });
+        });
+    </script>
+</head>
+<body>
+
+<div class="edit-author">
+    <div class="form-group">
+        <label for="exampleInputEmail1">用户名</label>
+        <input type="text" id="name" name="name" class="form-control" placeholder="请输入用户名" >
+    </div>
+        <div class="form-group">
+        <label for="exampleInputPassword1">密码</label>
+        <input type="password" id="pwd" name="password" class="form-control" placeholder="请输入密码">
+    </div>
+    <button type="submit" id="clickBtn" class="btn btn-default submit-button">开始登陆</button>
+    <span id="error"></span>
+</div>
+
+</body>
+</html>

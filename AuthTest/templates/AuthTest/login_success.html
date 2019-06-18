@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录成功</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.min.css' %}">
+    <script src="{% static 'jquery-3.3.1.js' %}"></script>
+    <style>
+        .edit-author {
+            margin: 100px 300px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="edit-author">
+    <a href="{% url 'AuthTest:auth_logout' %}">注销登录</a>
+</div>
+
+</body>
+</html>
