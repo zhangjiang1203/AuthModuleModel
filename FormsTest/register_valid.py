@@ -68,11 +68,13 @@ class RegisterForms(Form):
 
     phone = forms.CharField(label="请输入手机号码",
                             validators=[mobile_validate,],
-                            widget=widgets.PasswordInput(attrs={'class': 'form-control',
+                            widget=widgets.TextInput(attrs={'class': 'form-control',
                                                                 'placeholder': '请输入手机号码'}),
                             error_messages={'placerholder': '请输入手机号码'})
 
     email = forms.EmailField(label='请输入邮箱',required=False,
+                             widget=widgets.TextInput(attrs={'class': 'form-control',
+                                                                 'placeholder': '请输入邮箱'}),
                              error_messages={'invalid':'格式不合法',
                                              'max_length':'密码最多20位'})
 

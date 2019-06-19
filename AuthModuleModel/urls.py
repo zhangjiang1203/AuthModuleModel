@@ -19,4 +19,5 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^authModule/',include('AuthTest.urls')),
+    url(r'^formstest/',include('FormsTest.urls')),
 ]

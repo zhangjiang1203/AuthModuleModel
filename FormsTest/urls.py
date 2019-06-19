@@ -8,6 +8,9 @@
 
 from django.conf.urls import url
 from FormsTest import views
+
+app_name='FormsTest'
+
 urlpatterns = [
-    url(r'^forms_index/',views.form_index()),
+    url(r'^forms_index/',views.form_index,name='forms_index'),
 ]

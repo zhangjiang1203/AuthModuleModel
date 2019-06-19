@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>forms登录</title>
+    <title>登录展示</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.min.css' %}">
     <script src="{% static 'jquery-3.3.1.js' %}"></script>
@@ -10,93 +10,52 @@
         .edit-author{
             margin: 100px 300px;
         }
-        .errorInfo{
+        #error{
             color: red;
-            font-size: 10px;
+            padding-left: 15px;
         }
-
     </style>
+    {# 添加下面的token才能发送post请求    #}
+    {% csrf_token %}
+    <script src="{% static 'ajax_token.js' %}"></script>
     <script>
         $(function () {
-            {#所有的输入框添加样式#}
-            {% for foo in post_forms %}
-                console.log('id_{{ foo.name }}')
-                $('#id_{{ foo.name }}').addClass('form-control')
-            {% endfor %}
+           $('#clickBtn').click(function () {
+              console.log('开始点击');
+              $.ajax({
+                  {#尽量在文件中不要使用硬编码书写url，使用对应的名称，便于以后开发维护#}
+                  {#url:'/AuthTest/index/' ,#}
+                  url:'{% url 'AuthTest:indexPage' %}',
+                  type:'post',
+                  {#取出输入框中的值，$("#name").val()#}
+                  data:{'name':$('#name').val(),'pwd':$('#pwd').val(),'csrfmiddlewaretoken':'{{ csrf_token }}'},
+                  success:function (data) {
+                      console.log(data.msg)
+                      if (data.status == 200) {
+                          // 跳转到制定的位置,或者直接写死一个url
+                          location.href = '{% url 'AuthTest:login_success' %}'
+                      }else {
+                          $('#error').text(data.msg)
+                      }
+                  }
+              })
+           });
         });
     </script>
 </head>
 <body>
 
 <div class="edit-author">
-{#    <form action="" method="post">#}
-{#        {% csrf_token %}#}
-{#        <div class="form-group">#}
-{#            <label for="exampleInputEmail1">用户名</label>#}
-{#            <input type="text" name="name" class="form-control" placeholder="请输入用户名" >#}
-{#        </div>#}
-{#        <div class="form-group">#}
-{#            <label for="exampleInputPassword1">密码</label>#}
-{#            <input type="password" name="pwd" class="form-control" placeholder="请输入密码">#}
-{#        </div>#}
-{#        <div class="form-group">#}
-{#            <label for="exampleInputPassword1">确认密码</label>#}
-{#            <input type="password" name="re_pwd" class="form-control" placeholder="请确认密码">#}
-{#        </div>#}
-{#        <div class="form-group">#}
-{#            <label for="exampleInputPassword1">邮箱</label>#}
-{#            <input type="email" name="email" class="form-control" placeholder="请输入邮箱">#}
-{#        </div>#}
-{##}
-{#        <button type="submit" id="clickBtn" class="btn btn-default submit-button">注册</button>#}
-{#        <span id="error"></span>#}
-{#    </form>#}
-
-
-{#    forms渲染页面第一种方式#}
-{#    <form action="" method="post">#}
-{#        {% csrf_token %}#}
-{#        <div class="form-group">#}
-{#            <label for="exampleInputEmail1">用户名</label>#}
-{#            {{ post_forms.name }}#}
-{#        </div>#}
-{#        <div class="form-group">#}
-{#            <label for="exampleInputPassword1">密码</label>#}
-{#            {{ post_forms.pwd }}#}
-{#        </div>#}
-{#        <div class="form-group">#}
-{#            <label for="exampleInputPassword1">确认密码</label>#}
-{#            {{ post_forms.re_pwd }}#}
-{#        </div>#}
-{#        <div class="form-group">#}
-{#            <label for="exampleInputPassword1">邮箱</label>#}
-{#            {{ post_forms.email }}#}
-{#        </div>#}
-{#        <button type="submit" id="clickBtn" class="btn btn-default submit-button">注册</button>#}
-{#    </form>#}
-
-    {#    forms渲染页面第二种方式，推荐使用#}
-    <form action="" method="post" novalidate>
-        {% csrf_token %}
-        {% for foo in post_forms %}
-            <div class="form-group">
-                {# errors是一个列表，一般取第一个就可以了，这样不会换行处理#}
-                <label for="exampleInputEmail1">{{ foo.label }}</label><span class="errorInfo"> {{ foo.errors.0 }}</span>
-                {{ foo }}
-            </div>
-        {% endfor %}
-        <button type="submit" id="clickBtn" class="btn btn-default submit-button">注册</button>
-    </form>
-
-{#    forms渲染页面第二种方式,不推荐使用#}
-{#    <form action="" method="post">#}
-{#        {% csrf_token %}#}
-{#        {{ post_forms.as_p }}#}
-{#        {{ post_forms.as_ul }}#}
-{#        {{ post_forms.as_table }}#}
-{#        <button type="submit" id="clickBtn" class="btn btn-default submit-button">注册</button>#}
-{#    </form>#}
-
+    <div class="form-group">
+        <label for="exampleInputEmail1">用户名</label>
+        <input type="text" id="name" name="name" class="form-control" placeholder="请输入用户名" >
+    </div>
+        <div class="form-group">
+        <label for="exampleInputPassword1">密码</label>
+        <input type="password" id="pwd" name="password" class="form-control" placeholder="请输入密码">
+    </div>
+    <button type="submit" id="clickBtn" class="btn btn-default submit-button">开始登陆</button>
+    <span id="error"></span>
 </div>
 
 </body>

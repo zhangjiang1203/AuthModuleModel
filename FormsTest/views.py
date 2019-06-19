@@ -10,4 +10,4 @@ def form_index(request):
         if reg_forms.is_valid():
             return HttpResponse('注册成功')
 
-        return render(request, 'FormsTest/forms_index.html',locals())
+    return render(request, 'FormsTest/forms_index.html',locals())
