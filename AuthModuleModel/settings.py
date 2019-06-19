@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'AuthTest.apps.AuthtestConfig',
+    'FormsTest.apps.FormstestConfig',
 ]
 
 MIDDLEWARE = [
@@ -48,6 +49,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 注册自定义的中间件 appname.中间件.对应类
+    'AuthTest.CustomMiddleModule.CustomMiddle',
 ]
 
 ROOT_URLCONF = 'AuthModuleModel.urls'
