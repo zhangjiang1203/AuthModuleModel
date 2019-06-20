@@ -23,7 +23,7 @@ import re
 
 #自定义校验规则
 def mobile_validate(value):
-    mobile_re = re.compile(r'^(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$')
+    mobile_re = re.compile(r'^(^1[3456789]\d{9}$)')
     if not mobile_re.match(value):
         raise ValidationError('手机号码格式错误')
 
@@ -44,38 +44,38 @@ class RegisterForms(Form):
     '''
     name = forms.CharField(min_length=3,max_length=8,
                            label="用户名",
-                           widget=widgets.PasswordInput(attrs={'class': 'form-control',
-                                                               'placeholder': '请输入名称(3-8字符)'}),
+                           widget=widgets.TextInput(attrs={'class': 'form-control',
+                                                            'placeholder': '请输入名称(3-8字符)'}),
                            error_messages={'min_length':'用户名最少为3位',
                                            'max_length':'用户名最多8位',
                                            'required':'名称不能为空'})
 
-    pwd = forms.CharField(min_length=3, max_length=20,
+    pwd = forms.CharField(min_length=6, max_length=20,
                           label='请输入密码',
                           widget=widgets.PasswordInput(attrs={'class':'form-control',
                                                               'placeholder':'请输入密码(6-20字符)'}),
-                          error_messages={'min_length':'密码最少为3位',
+                          error_messages={'min_length':'密码最少为6位',
                                           'max_length':'密码最多20位',
                                           'required':'密码不能为空'})
 
-    re_pwd = forms.CharField(min_length=3, max_length=20,
+    re_pwd = forms.CharField(min_length=6, max_length=20,
                              label='请确认密码',
                              widget=widgets.PasswordInput(attrs={'class': 'form-control',
                                                                  'placeholder': '请确认密码'}),
-                             error_messages={'min_length':'密码最少为3位',
+                             error_messages={'min_length':'密码最少为6位',
                                              'max_length':'密码最多20位',
                                              'required':'密码不能为空'})
 
     phone = forms.CharField(label="请输入手机号码",
                             validators=[mobile_validate,],
                             widget=widgets.TextInput(attrs={'class': 'form-control',
-                                                                'placeholder': '请输入手机号码'}),
+                                                            'placeholder': '请输入手机号码'}),
                             error_messages={'placerholder': '请输入手机号码'})
 
     email = forms.EmailField(label='请输入邮箱',required=False,
                              widget=widgets.TextInput(attrs={'class': 'form-control',
-                                                                 'placeholder': '请输入邮箱'}),
-                             error_messages={'invalid':'格式不合法',
+                                                             'placeholder': '请输入邮箱'}),
+                             error_messages={'invalid':'邮箱格式不合法',
                                              'max_length':'密码最多20位'})
 
     # 对于多传的字段不会出错，cleaned_data中不包含多传的字段
@@ -103,4 +103,4 @@ class RegisterForms(Form):
         if pwd == re_pwd:
             return self.cleaned_data
         else:
-            return ValidationError('两次密码不一致')
+            raise ValidationError('两次密码不一致')

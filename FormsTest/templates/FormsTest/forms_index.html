@@ -10,9 +10,10 @@
         .edit-author{
             margin: 100px 300px;
         }
-        .errorInfo{
+        .errorinfo{
             color: red;
-            font-size: 10px;
+            font-size: 15px;
+            padding-left: 15px;
         }
 
     </style>
@@ -81,11 +82,13 @@
         {% for foo in reg_forms %}
             <div class="form-group">
                 {# errors是一个列表，一般取第一个就可以了，这样不会换行处理#}
-                <label for="exampleInputEmail1">{{ foo.label }}</label><span class="errorInfo"> {{ foo.errors.0 }}</span>
+                <label for="exampleInputEmail1">{{ foo.label }}</label>
+                <span class="errorinfo"> {{ foo.errors.0 }}</span>
                 {{ foo }}
             </div>
         {% endfor %}
         <button type="submit" id="clickBtn" class="btn btn-default submit-button">注册</button>
+        <span class="errorinfo">{{ error }} </span>
     </form>
 
 {#    forms渲染页面第二种方式,不推荐使用#}
